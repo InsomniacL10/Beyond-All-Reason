@@ -45,12 +45,14 @@ end
 local spawnFrame = Game.spawnWarpInFrame + Game.gameSpeed * 2 -- add time to deconflict initial build orders
 
 function SpawnAssistTurret(unitID, unitDefID, unitTeam)
-	local posx, posy, posz = Spring.GetUnitPosition(unitID)
+	local commander_posx, posy, commander_posz = Spring.GetUnitPosition(unitID)
     local spawnpadunit = spawnpads[unitDefID]
     local spawnpadID
     for k = 1,10000 do
-        posx = math.ceil((posx + math.random(-k-64, k+64))/16)*16
-        posz = math.ceil((posz + math.random(-k-64, k+64))/16)*16
+        local offset_x = math.random(-k-64, k+64)
+        local offset_z = math.random(-k-64, k+64)
+        local posx = math.ceil((commander_posx + offset_x)/16)*16
+        local posz = math.ceil((commander_posz + offset_z)/16)*16
         posy = Spring.GetGroundHeight(posx, posz)
         local canSpawnTurret = positionCheckLibrary.FlatAreaCheck(posx, posy, posz, 96)
         if canSpawnTurret then
